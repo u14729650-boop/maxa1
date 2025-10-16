@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Basketball Live Scoreboard</title>
+<style>
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #191970 70%, #6C3483 120%);
+  color: #FFCA28;
+  text-align: center;
+  padding: 50px;
+}
+.card {
+  background: rgba(41, 39, 74, 0.85);
+  border-radius: 18px;
+  margin: 0 auto;
+  padding: 32px 10px;
+  max-width: 500px;
+  box-shadow: 0 4px 28px rgba(44,62,80,0.12);
+}
+h1 { font-size: 2.6em; margin-bottom: 6px; color: #FFCA28; }
+h2 { font-size: 3.2em; color: #6C3483; margin-top: 10px; margin-bottom: 30px; }
+.timer { font-size: 2.1em; margin-top: 28px; color: #FFCA28; letter-spacing: 2px;}
+hr {
+  border: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FFCA28 70%, #E74C3C 120%);
+  margin: 18px auto;
+  width: 80%;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1 id="teamA">Team A</h1>
+  <h2 id="scoreA">0</h2>
+  <hr>
+  <h1 id="teamB">Team B</h1>
+  <h2 id="scoreB">0</h2>
+  <div class="timer">Game Time: <span id="timer">10:00</span></div>
+</div>
+<script>
+const channel = new BroadcastChannel("scoreboard");
+channel.onmessage = e => {
+  const data = e.data;
+  document.getElementById('teamA').textContent = data.teamA;
+  document.getElementById('teamB').textContent = data.teamB;
+  document.getElementById('scoreA').textContent = data.scoreA;
+  document.getElementById('scoreB').textContent = data.scoreB;
+  document.getElementById('timer').textContent = format(data.timer);
+};
+function format(s){
+  const m=Math.floor(s/60), sec=s%60;
+  return `${m}:${sec<10?'0'+sec:sec}`;
+}
+</script>
+</body>
+</html>
